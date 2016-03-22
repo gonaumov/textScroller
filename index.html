@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        #progressBar {
+            background-color: gray;
+            width: 50%;
+            height: 50px;
+        }
+
+        #word {
+            font-family: Verdana, Geneva, Arial, sans-serif;
+            font-size: 130px;
+            text-align: center;
+            margin-top: 200px;
+            color: white;
+        }
+        
+        body *{
+			vertical-align: top;
+		}
+		
+		label {
+			cursor: pointer;
+		}
+    </style>
+</head>
+<body>
+<div id="progressBar"></div>
+<div id="word"></div>
+<label for="toRepeat">Repeat words:</label><input type="checkbox" id="toRepeat" value="1"/>
+<textarea id="textToScroll" rows="40" cols="40">
+    Time to face the FACTS of coaching What is overextended.
+</textarea>
+<script>
+    var chapter = document.getElementById("textToScroll").textContent.trim();
+    chapter = chapter.replace(" ", " ");
+    chapter = chapter.replace("“", "\"");
+    chapter = chapter.replace("”", "\"");
+    var res = chapter.split(" ");
+    var i = 0;
+    var working = true;
+    function displayword() {
+		var toRepeat = document.getElementById("toRepeat").checked;
+		if (toRepeat && i >= res.length) {
+			i = 0;
+		}
+        else if (i >= res.length) {
+            return;
+        }
+        document.getElementById('word').innerHTML = res[i];
+        var percentage = Math.round(i * 10000 / res.length) / 100;
+        document.getElementById('progressBar').setAttribute("style", "background-color:grey;height:50px;width:" + percentage + "%");
+        i++;
+        if (working) {
+            setTimeout(displayword, 250);
+        }
+    }
+    setTimeout(displayword, 250);
+    document.onkeypress = function (event) {
+        if (event.keyCode === 0 && working === true) {
+            working = false;
+            return false;
+        }
+        if (event.keyCode === 0) {
+            working = true;
+            setTimeout(displayword, 250);
+            return false;
+        }
+    };
+</script>
+</body>
+</html>
